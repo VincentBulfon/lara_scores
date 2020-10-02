@@ -8,13 +8,6 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Return an instance of carbon today date
-     *
-     * @var \Illuminate\Support\Carbon
-     */
-    protected $today = today();
-
-    /**
      * Register any application services.
      *
      * @return void
@@ -31,6 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::share('date', $this->today);
+        View::share('date', today()->format('Y-m-d'));
     }
 }
