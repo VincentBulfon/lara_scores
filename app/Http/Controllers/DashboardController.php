@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Match;
+
 class DashboardController extends Controller
 {
     public function index()
     {
-        return view('dashboard');
+        $matches = Match::with('teams')->get();
+
+        return view('dashboard', compact('matches'));
     }
 }

@@ -1,5 +1,5 @@
 <section>
-    <h2>Games played at #TODO</h2>
+    <h2>Games played at {{ $data }}</h2>
     <table>
         <thead>
             <tr>
@@ -11,14 +11,15 @@
             </tr>
         </thead>
         <tbody>
-            <!--TODO-->
+            @foreach($matches as $match)
             <tr>
-                <td></td>
-                <td></td>
+                <td>{{$match->played_at}}</td>
+                <td>{{$match->isHomeTeam}}</td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
+            @endforeach
         </tbody>
     </table>
 </section>
