@@ -17,8 +17,8 @@ class CreateParticipationTable extends Migration
             $table->id();
             $table->foreignId('team_id');
             $table->foreignId('match_id');
-            $table->boolean('is_home')->unsigned();
-            $table->tinyInteger('goals')->unsigned();
+            $table->boolean('is_home')->nullable('false')->unsigned();
+            $table->tinyInteger('goals')->nullable('false')->unsigned();
             $table->timestamps();
         });
     }
