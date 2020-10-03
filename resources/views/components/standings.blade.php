@@ -3,7 +3,6 @@
     <table>
         <thead>
             <tr>
-                <td></td>
                 <th scope="col">Team</th>
                 <th scope="col">Games</th>
                 <th scope="col">Points</th>
@@ -17,16 +16,19 @@
         </thead>
         <tbody>
             <!-- TODO -->
-            <td>&nbsp;</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            @foreach($teams as $team)
+            <tr>
+                <td>{{$team->name}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{$team->goals}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            @endforeach
         </tbody>
     </table>
 </section>
