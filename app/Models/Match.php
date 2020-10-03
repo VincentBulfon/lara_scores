@@ -19,7 +19,7 @@ class Match extends Model
     }
 
     /**
-     * return the boolean if team is at home or not
+     * return the name of the home team
      * @return string
      */
     public function getHomeTeamAttribute()
@@ -29,8 +29,36 @@ class Match extends Model
         })->first()->name;
     }
 
+    /**
+     * return the name of the away team
+     * @return string
+     */
     public function getAwayTeamAttribute()
     {
-        return $this->team
+        return $this->teams->filter(function ($team) {
+            return $team->pivot->is_home === 0;
+        })->first()->name;
+    }
+
+    /**
+     * return number of goals for the home team
+     * @return integer
+     */
+    public function getHomeTeamGoalsAttribute()
+    {
+        return $this->teams->filter(function ($team) {
+            return $team->pivot->is_home === 1;
+        })->first()->pivot->goals;
+    }
+
+    /**
+     * return the numboer of goals for the away team
+     * @return integer
+     */
+    public function getAwayTeamGoalsAttribute()
+    {
+        return $this->teams->filter(function ($team) {
+            return $team->pivot->is_home === 0;
+        })->first()->pivot->goals;
     }
 }

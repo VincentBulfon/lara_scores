@@ -14,10 +14,10 @@
             @foreach($matches as $match)
             <tr>
                 <td>{{$match->played_at}}</td>
-                <td>{{$match->isHomeTeam}}</td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{$match->HomeTeam}}</td>
+                <td>{{$match->HomeTeamGoals}}</td>
+                <td>{{$match->AwayTeamGoals}}</td>
+                <td>{{$match->AwayTeam}}</td>
             </tr>
             @endforeach
         </tbody>
