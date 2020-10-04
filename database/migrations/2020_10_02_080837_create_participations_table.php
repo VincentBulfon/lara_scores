@@ -16,7 +16,7 @@ class CreateParticipationsTable extends Migration
         Schema::create('participations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('team_id');
-            $table->foreignId('match_id');
+            $table->foreignId('match_id')->onDelete('cascade');
             $table->boolean('is_home')->nullable('false')->unsigned();
             $table->tinyInteger('goals')->nullable('false')->unsigned();
             $table->timestamps();

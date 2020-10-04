@@ -20,13 +20,13 @@
             <tr>
                 <td>{{$team->name}}</td>
                 <td>{{$team->TotalGames }}</td>
-                <td></td>
+                <td>{{$team->goals}}</td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td>{{$team->GoalsFor}}</td>
                 <td>{{$team->GoalsAgainst}}</td>
-                <td></td>
+                <td>{{$team->GoalsDifference}}</td>
             </tr>
             @endforeach
         </tbody>

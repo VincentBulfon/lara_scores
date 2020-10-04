@@ -20,6 +20,15 @@ class Team extends Model
     }
 
     /**
+     * return the number of games played
+     * @return int
+     */
+    public function getTotalGamesAttribute()
+    {
+        return $this->matches()->count();
+    }
+
+    /**
      * return the number of gaols scored by the team
      * @return int
      */
@@ -43,6 +52,17 @@ class Team extends Model
         }
 
         return array_sum($goals);
+    }
+
+    public function getGoalsDifferenceAttribute()
+    {
+        foreach ($this->matches as $match) {
+            $teamGoals[] = DB::table('participations')->where([['match_id', '=', $match->id], ['team_id', '=', $this->id]])->first()->goals;
+
+            $oppoenentGoals[] = DB::table('participations')->where([['match_id', '=', $match->id], ['team_id', '!=', $this->id]])->first()->goals;
+        }
+
+        return array_sum($teamGoals) - array_sum($oppoenentGoals);
     }
 
     /**
