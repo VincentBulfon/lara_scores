@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Team extends Model
 {
@@ -30,4 +31,34 @@ class Team extends Model
 
         return array_sum($goals);
     }
+
+    /**
+     * return the number of goals scored against this team
+     * @return int
+     */
+    public function getGoalsAgainstAttribute()
+    {
+        foreach ($this->matches as $match) {
+            $goals[] = DB::table('participations')->where([['match_id', '=', $match->id], ['team_id', '!=', $this->id]])->first()->goals;
+        }
+
+        return array_sum($goals);
+    }
+
+    /**
+     * return the number of goals scored while this team was at home
+     * @return int
+     */
+    // public function getGoalsForAtHomeAttribute()
+    // {
+    //     foreach (
+    //         $this->matches->filter(function ($match) {
+    //             return $match->pivot->is_home === 0;
+    //         })->all()
+    //     as $matchWhenIsHome) {
+    //         $WhenIsHomeGoals[] = $matchWhenIsHome->pivot->goals;
+    //     }
+
+    //     return array_sum($HomeTeamGoals);
+    // }
 }
