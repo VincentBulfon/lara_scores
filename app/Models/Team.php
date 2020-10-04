@@ -54,6 +54,12 @@ class Team extends Model
         return array_sum($goals);
     }
 
+    /**
+     *
+     * return the goals
+     * @return int
+     * @throws \InvalidArgumentException
+     */
     public function getGoalsDifferenceAttribute()
     {
         foreach ($this->matches as $match) {

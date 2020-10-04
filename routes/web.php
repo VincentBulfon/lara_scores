@@ -13,4 +13,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [App\Http\Controllers\DashboardController::class, 'index']);
+Route::get(
+    '/',
+    [App\Http\Controllers\DashboardController::class, 'index']
+);
+
+Route::get(
+    '/match/create',
+    [App\Http\Controllers\MatchController::class, 'create']
+)->name('match_creation')->middleware(['auth']);
+
+Route::post(
+    '/match',
+    [App\Http\Controllers\MatchController::class, 'store']
+)->name('match_store')->middleware(['auth']);
+
+Route::get(
+    '/team/create',
+    [App\Http\Controllers\TeamController::class, 'create']
+)->name('team_creation')->middleware('auth');
+
+Route::post(
+    '/team',
+    [App\Http\Controllers\TeamController::class, 'store']
+)->name('team_store')->middleware('auth');
