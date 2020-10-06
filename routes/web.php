@@ -21,7 +21,7 @@ Route::get(
 Route::get(
     '/match/create',
     [App\Http\Controllers\MatchController::class, 'create']
-)->name('match_creation')->middleware(['auth']);
+)->name('match_create')->middleware(['auth']);
 
 Route::post(
     '/match',
@@ -31,7 +31,7 @@ Route::post(
 Route::get(
     '/team/create',
     [App\Http\Controllers\TeamController::class, 'create']
-)->name('team_creation')->middleware('auth');
+)->name('team_create')->middleware('auth');
 
 Route::post(
     '/team',
