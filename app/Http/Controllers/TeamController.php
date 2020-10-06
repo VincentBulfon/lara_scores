@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTeamRequest;
 use App\Models\Team;
 use Illuminate\Http\Request;
 
@@ -33,9 +34,18 @@ class TeamController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTeamRequest $request)
     {
-        //
+        //#TODO
+
+        $extension = $request->file_name->extension();
+        $request->file_name->storeAs('/public/', mb_strtoupper(mb_substr($request->name, 0, 3)) . '.' . $extension);
+        //$url = Storage::url('public/' . mb_strtoupper(mb_substr($request->name, 0, 3)) . '.' . $extension);
+        $team = Team::create([
+            'name' => $request->name,
+            'slug' => mb_strtoupper(mb_substr($request->name, 0, 3)),
+            //'file_name' => $url,
+        ]);
     }
 
     /**

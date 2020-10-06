@@ -64,6 +64,6 @@ class User extends Authenticatable
      */
     public function getIsTeamManagerAttribute():bool
     {
-        return $this->roles->pluck('name')->contains('teen-manager');
+        return $this->roles->pluck('name')->contains('team-manager');
     }
 }

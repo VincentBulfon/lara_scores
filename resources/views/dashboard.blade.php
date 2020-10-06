@@ -12,6 +12,9 @@
 @auth()
 @include('components.create')
 <hr>
-<a href="{{route('logout')}}">Se déconnecter</a>
+<form action="{{route('logout')}}" method="POST">
+        @csrf
+        <button type="submit">Logout</button>
+</form>
 @endauth()
 @include('components.footer')
