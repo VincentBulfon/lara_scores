@@ -21,9 +21,9 @@
                 <td>{{$team->name}}</td>
                 <td>{{$team->TotalGames }}</td>
                 <td>{{$team->goals}}</td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{$team->Wins}}</td>
+                <td>{{$team->Loses}}</td>
+                <td>{{$team->Draws}}</td>
                 <td>{{$team->GoalsFor}}</td>
                 <td>{{$team->GoalsAgainst}}</td>
                 <td>{{$team->GoalsDifference}}</td>

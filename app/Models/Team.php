@@ -72,6 +72,63 @@ class Team extends Model
     }
 
     /**
+     * return the numbre of loses
+     * @return int
+     */
+    public function getLosesAttribute()
+    {
+        $loses = 0;
+        foreach ($this->matches as $match) {
+            if (DB::table('participations')->where([['match_id', '=', $match->id], ['team_id', '=', $this->id]])->first()->goals < DB::table('participations')->where([['match_id', '!=', $match->id], ['team_id', '=', $this->id]])->first()->goals) {
+                $loses += 1;
+            }
+        }
+
+        return $loses;
+    }
+
+    /**
+     * return the numbre of draws
+     * @return int
+     */
+    public function getDrawsAttribute()
+    {
+        $draws = 0;
+        foreach ($this->matches as $match) {
+            if (DB::table('participations')->where([['match_id', '=', $match->id], ['team_id', '=', $this->id]])->first()->goals == DB::table('participations')->where([['match_id', '!=', $match->id], ['team_id', '=', $this->id]])->first()->goals) {
+                $draws += 1;
+            }
+        }
+
+        return $draws;
+    }
+
+    /**
+     * return the number of wins
+     * @return int
+     */
+    public function getWinsAttribute()
+    {
+        $wins = 0;
+        foreach ($this->matches as $match) {
+            if (DB::table('participations')->where([['match_id', '=', $match->id], ['team_id', '=', $this->id]])->first()->goals > DB::table('participations')->where([['match_id', '!=', $match->id], ['team_id', '=', $this->id]])->first()->goals) {
+                $wins += 1;
+            }
+        }
+
+        return $wins;
+    }
+
+    /**
+     * return the number of points
+     * @return int
+     */
+    public function getPointsAttribute()
+    {
+        // code...
+    }
+
+    /**
      * return the number of goals scored while this team was at home
      * @return int
      */
