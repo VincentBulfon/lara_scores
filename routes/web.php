@@ -21,19 +21,19 @@ Route::get(
 Route::get(
     '/match/create',
     [App\Http\Controllers\MatchController::class, 'create']
-)->name('match_create')->middleware(['auth']);
+)->name('match_create')->middleware(['auth', 'can:create, App\Models\Match']);
 
 Route::post(
     '/match',
     [App\Http\Controllers\MatchController::class, 'store']
-)->name('match_store')->middleware(['auth']);
+)->name('match_store')->middleware(['auth', 'can:store, App\Models\Match']);
 
 Route::get(
     '/team/create',
     [App\Http\Controllers\TeamController::class, 'create']
-)->name('team_create')->middleware('auth');
+)->name('team_create')->middleware(['auth', 'can:create, App\Models\Team']);
 
 Route::post(
     '/team',
     [App\Http\Controllers\TeamController::class, 'store']
-)->name('team_store')->middleware('auth');
+)->name('team_store')->middleware(['auth', 'can:store, App\Models\Team']);
