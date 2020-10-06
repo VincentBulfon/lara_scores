@@ -9,6 +9,8 @@ class Match extends Model
 {
     use HasFactory;
 
+    public $fillable = ['played_at', 'slug'];
+
     /**
      * return the relation between matches and teams
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
