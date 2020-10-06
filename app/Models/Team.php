@@ -20,6 +20,15 @@ class Team extends Model
     }
 
     /**
+     * return the relation between matches and teams
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function participations()
+    {
+        return $this->hasMany('App\Models\Participation');
+    }
+
+    /**
      * return the number of games played
      * @return int
      */
@@ -62,8 +71,13 @@ class Team extends Model
      */
     public function getGoalsDifferenceAttribute()
     {
+        foreach ($this->participations as $participation) {
+            $teamGoals[] = $participation->goals;
+        }
+
         foreach ($this->matches as $match) {
-            $teamGoals[] = DB::table('participations')->where([['match_id', '=', $match->id], ['team_id', '=', $this->id]])->first()->goals;
+            //old teamGoals request the create a new request outside the eloquent model for each team
+            //$teamGoals[] = DB::table('participations')->where([['match_id', '=', $match->id], ['team_id', '=', $this->id]])->first()->goals;
 
             $oppoenentGoals[] = DB::table('participations')->where([['match_id', '=', $match->id], ['team_id', '!=', $this->id]])->first()->goals;
         }
