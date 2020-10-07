@@ -42,8 +42,8 @@ class TeamPolicy
      */
     public function create(User $user)
     {
-        return $user->isAdmin ? Response::allow()
-                : Response::deny('You do not own this post.');
+        return $user->isTeamManager ? Response::allow()
+                : Response::deny(`You can't do this`);
     }
 
     /**
