@@ -37,15 +37,6 @@ class TeamController extends Controller
     public function store(StoreTeamRequest $request)
     {
         //#TODO
-
-        $extension = $request->file_name->extension();
-        $request->file_name->storeAs('/public/', mb_strtoupper(mb_substr($request->name, 0, 3)) . '.' . $extension);
-        //$url = Storage::url('public/' . mb_strtoupper(mb_substr($request->name, 0, 3)) . '.' . $extension);
-        $team = Team::create([
-            'name' => $request->name,
-            'slug' => mb_strtoupper(mb_substr($request->name, 0, 3)),
-            //'file_name' => $url,
-        ]);
     }
 
     /**
