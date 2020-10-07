@@ -11,6 +11,8 @@ class Match extends Model
 
     public $fillable = ['played_at', 'slug'];
 
+    protected $with = ['teams'];
+
     /**
      * return the relation between matches and teams
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
