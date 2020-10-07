@@ -25,7 +25,7 @@ class StoreTeamRequest extends FormRequest
     {
         return [
             'name' => 'string|required',
-            'file_name' => 'bail|required|mimes:jpeg,png,jpg,svg',
+            'file-name' => 'bail|required|mimes:jpeg,png,jpg,svg',
         ];
     }
 }
