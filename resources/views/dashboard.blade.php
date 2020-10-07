@@ -10,7 +10,9 @@
 <x-game_played :data=$date :matches=$matches />
 <hr>
 @auth()
+@canany(['add-match', 'add-team'])
 @include('components.create')
+@endcanany
 <hr>
 <form action="{{route('logout')}}" method="POST">
         @csrf
