@@ -15,10 +15,8 @@ class CreateTeamsTable extends Migration
     {
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('image_id')->nullable();
             $table->string('name')->unique();
             $table->string('slug')->unique();
-            $table->string('file_path')->unique();
             $table->timestamps();
         });
     }

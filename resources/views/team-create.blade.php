@@ -13,12 +13,12 @@
     <p>{{ $message }}</p>
     @enderror
     <label for="slug">Slug&nbsp;:</label>
-    <input type="text" name="name" id="slug" />
+    <input type="text" name="slug" id="slug" />
     @error('name')
     <p>{{ $message }}</p>
     @enderror
     <label for="flag">Flag&nbsp;:</label>
-    <input type="file" name="file-name" id="flag" />
+    <input type="file" name="file" id="flag" />
     @error('file_name')
     <p>{{ $message }}</p>
     @enderror
