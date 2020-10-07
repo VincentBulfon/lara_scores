@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MatchController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,3 +38,6 @@ Route::post(
     '/team',
     [App\Http\Controllers\TeamController::class, 'store']
 )->name('team_store')->middleware(['auth', 'can:store, App\Models\Team']);
+
+//Route::resource('/matches', MatchController::class)->middleware(['auth', 'can:store, App\Models\Match']);
+//Route::resource('/matches', MatchController::class)->middleware(['auth', 'can:store, App\Models\Team']);
