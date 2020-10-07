@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Team extends Model
 {
@@ -20,21 +19,12 @@ class Team extends Model
     }
 
     /**
-     * return the relation between matches and teams
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function participations()
-    {
-        return $this->hasMany('App\Models\Participation');
-    }
-
-    /**
      * return the number of games played
      * @return int
      */
-    public function getTotalGamesAttribute()
+    public function getGamesAttribute()
     {
-        return $this->matches()->count();
+        return $this->matches->count();
     }
 
     /**
@@ -56,8 +46,13 @@ class Team extends Model
      */
     public function getGoalsAgainstAttribute()
     {
+        $goals = [];
         foreach ($this->matches as $match) {
-            $goals[] = DB::table('participations')->where([['match_id', '=', $match->id], ['team_id', '!=', $this->id]])->first()->goals;
+            if ($match->teams[0]->id != $this->id) {
+                $goals[] = $match->teams[0]->pivot->goals;
+            } else {
+                $goals[] = $match->teams[1]->pivot->goals;
+            }
         }
 
         return array_sum($goals);
@@ -71,18 +66,21 @@ class Team extends Model
      */
     public function getGoalsDifferenceAttribute()
     {
-        foreach ($this->participations as $participation) {
-            $teamGoals[] = $participation->goals;
-        }
-
+        $thisTeamTotal = 0;
+        $opponentTeamTotal = 0;
         foreach ($this->matches as $match) {
-            //old teamGoals request the create a new request outside the eloquent model for each team
-            //$teamGoals[] = DB::table('participations')->where([['match_id', '=', $match->id], ['team_id', '=', $this->id]])->first()->goals;
-
-            $oppoenentGoals[] = DB::table('participations')->where([['match_id', '=', $match->id], ['team_id', '!=', $this->id]])->first()->goals;
+            if ($match->teams[0]->id === $this->id) {
+                $thisTeamGoals = $match->teams[0]->pivot->goals;
+                $awayTeamGoals = $match->teams[1]->pivot->goals;
+            } else {
+                $thisTeamGoals = $match->teams[1]->pivot->goals;
+                $awayTeamGoals = $match->teams[0]->pivot->goals;
+            }
+            $thisTeamTotal += $thisTeamGoals;
+            $opponentTeamTotal += $awayTeamGoals;
         }
 
-        return array_sum($teamGoals) - array_sum($oppoenentGoals);
+        return $thisTeamTotal - $opponentTeamTotal;
     }
 
     /**
@@ -93,9 +91,14 @@ class Team extends Model
     {
         $loses = 0;
         foreach ($this->matches as $match) {
-            if (DB::table('participations')->where([['match_id', '=', $match->id], ['team_id', '=', $this->id]])->first()->goals < DB::table('participations')->where([['match_id', '!=', $match->id], ['team_id', '=', $this->id]])->first()->goals) {
-                $loses += 1;
+            if ($match->teams[0]->id === $this->id) {
+                $thisTeamGoals = $match->teams[0]->pivot->goals;
+                $oppenentTeamGoals = $match->teams[1]->pivot->goals;
+            } else {
+                $thisTeamGoals = $match->teams[1]->pivot->goals;
+                $oppenentTeamGoals = $match->teams[0]->pivot->goals;
             }
+            $thisTeamGoals < $oppenentTeamGoals ? $loses++ : null ;
         }
 
         return $loses;
@@ -109,9 +112,14 @@ class Team extends Model
     {
         $draws = 0;
         foreach ($this->matches as $match) {
-            if (DB::table('participations')->where([['match_id', '=', $match->id], ['team_id', '=', $this->id]])->first()->goals == DB::table('participations')->where([['match_id', '!=', $match->id], ['team_id', '=', $this->id]])->first()->goals) {
-                $draws += 1;
+            if ($match->teams[0]->id === $this->id) {
+                $thisTeamGoals = $match->teams[0]->pivot->goals;
+                $oppenentTeamGoals = $match->teams[1]->pivot->goals;
+            } else {
+                $thisTeamGoals = $match->teams[1]->pivot->goals;
+                $oppenentTeamGoals = $match->teams[0]->pivot->goals;
             }
+            $thisTeamGoals === $oppenentTeamGoals ? $draws++ : null ;
         }
 
         return $draws;
@@ -125,9 +133,14 @@ class Team extends Model
     {
         $wins = 0;
         foreach ($this->matches as $match) {
-            if (DB::table('participations')->where([['match_id', '=', $match->id], ['team_id', '=', $this->id]])->first()->goals > DB::table('participations')->where([['match_id', '!=', $match->id], ['team_id', '=', $this->id]])->first()->goals) {
-                $wins += 1;
+            if ($match->teams[0]->id === $this->id) {
+                $thisTeamGoals = $match->teams[0]->pivot->goals;
+                $oppenentTeamGoals = $match->teams[1]->pivot->goals;
+            } else {
+                $thisTeamGoals = $match->teams[1]->pivot->goals;
+                $oppenentTeamGoals = $match->teams[0]->pivot->goals;
             }
+            $thisTeamGoals > $oppenentTeamGoals ? $wins++ : null ;
         }
 
         return $wins;
@@ -139,23 +152,28 @@ class Team extends Model
      */
     public function getPointsAttribute()
     {
-        // code...
+        //get winws
+
+        $wins = 0;
+        $draws = 0;
+        foreach ($this->matches as $match) {
+            if ($match->teams[0]->id === $this->id) {
+                $thisTeamGoals = $match->teams[0]->pivot->goals;
+                $oppenentTeamGoals = $match->teams[1]->pivot->goals;
+            } else {
+                $thisTeamGoals = $match->teams[1]->pivot->goals;
+                $oppenentTeamGoals = $match->teams[0]->pivot->goals;
+            }
+            if ($thisTeamGoals > $oppenentTeamGoals) {
+                $wins++;
+            } elseif ($thisTeamGoals === $oppenentTeamGoals) {
+                $draws++;
+            }
+        }
+
+        //calculate points (loses dosen't give any points, wins give 3 points each, draws give 1 point each)
+
+        return 0;
+        //return ($wins * 3) + $draws;
     }
-
-    /**
-     * return the number of goals scored while this team was at home
-     * @return int
-     */
-    // public function getGoalsForAtHomeAttribute()
-    // {
-    //     foreach (
-    //         $this->matches->filter(function ($match) {
-    //             return $match->pivot->is_home === 0;
-    //         })->all()
-    //     as $matchWhenIsHome) {
-    //         $WhenIsHomeGoals[] = $matchWhenIsHome->pivot->goals;
-    //     }
-
-    //     return array_sum($HomeTeamGoals);
-    // }
 }
