@@ -18,7 +18,7 @@
     <p>{{ $message }}</p>
     @enderror
     <label for="flag">Flag&nbsp;:</label>
-    <input type="file" name="file_name" id="flag" />
+    <input type="file" name="file-name" id="flag" />
     @error('file_name')
     <p>{{ $message }}</p>
     @enderror
