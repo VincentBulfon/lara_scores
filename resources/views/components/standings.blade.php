@@ -15,18 +15,17 @@
             </tr>
         </thead>
         <tbody>
-            <!-- TODO -->
             @foreach($teams as $team)
             <tr>
                 <td>{{$team->name}}</td>
-                <td>{{$team->TotalGames }}</td>
-                <td>{{$team->goals}}</td>
-                <td>{{$team->Wins}}</td>
-                <td>{{$team->Loses}}</td>
-                <td>{{$team->Draws}}</td>
-                <td>{{$team->GoalsFor}}</td>
-                <td>{{$team->GoalsAgainst}}</td>
-                <td>{{$team->GoalsDifference}}</td>
+                <td>{{$team->totalGames }}</td>
+                <td>{{$team->points}}</td>
+                <td>{{$team->wins}}</td>
+                <td>{{$team->loses}}</td>
+                <td>{{$team->draws}}</td>
+                <td>{{$team->goalsFor}}</td>
+                <td>{{$team->goalsAgainst}}</td>
+                <td>{{$team->goalsDifference}}</td>
             </tr>
             @endforeach
         </tbody>

@@ -32,10 +32,10 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('add-match', function ($user) {
-            return $user->isAdmin || $user->isTeamManager;
+            return $user->isAdmin;
         });
         Gate::define('add-team', function ($user) {
-            return $user->isTeamManager;
+            return $user->isTeamManager || $user->isAdmin;
         });
     }
 }

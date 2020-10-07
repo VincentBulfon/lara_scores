@@ -27,7 +27,7 @@ Route::get(
 Route::post(
     '/match',
     [App\Http\Controllers\MatchController::class, 'store']
-)->name('match_store')->middleware(['auth', 'can:store, App\Models\Match']);
+)->name('match_store')->middleware(['auth', 'can:create, App\Models\Match']);
 
 Route::get(
     '/team/create',
@@ -37,7 +37,7 @@ Route::get(
 Route::post(
     '/team',
     [App\Http\Controllers\TeamController::class, 'store']
-)->name('team_store')->middleware(['auth', 'can:store, App\Models\Team']);
+)->name('team_store')->middleware(['auth', 'can:create, App\Models\Team']);
 
 //Route::resource('/matches', MatchController::class)->middleware(['auth', 'can:store, App\Models\Match']);
-//Route::resource('/matches', MatchController::class)->middleware(['auth', 'can:store, App\Models\Team']);
+//Route::resource('/teams', MatchController::class)->middleware(['auth', 'can:store, App\Models\Team']);
