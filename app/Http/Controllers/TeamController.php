@@ -36,7 +36,17 @@ class TeamController extends Controller
      */
     public function store(StoreTeamRequest $request)
     {
-        //#TODO
+        if ($request->hasFile('file')) {
+            $newName = $request->validated()['file']->hashName();
+            $request->validated()['file']->storeAs('images', $newName);
+        }
+        $slug = mb_strtoupper($request->validated()['slug']);
+        Team::create([
+            'name' => $request->validated()['name'],
+            'slug' => $slug
+        ]);
+        Team::where('slug', '=', $slug)->first()->images()->create(['file_name' => '$newName']);
+        redirect('/team/create');
     }
 
     /**
