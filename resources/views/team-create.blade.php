@@ -1,6 +1,15 @@
 @include('components.header')
 <h1>Add a team</h1>
-
+@if($teams)
+<div>
+    <ul>
+    @foreach($teams as $team)
+    <li>{{$team->name}}</li>
+    @endforeach
+</ul>
+<p>My team is already in the list! <a href="{{route('match_create')}}">I want to add a match.</a></p>
+</div>
+@endif
 <form
     action="{{ route('team_store') }}"
     method="post"

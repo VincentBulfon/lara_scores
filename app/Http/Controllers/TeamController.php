@@ -39,8 +39,6 @@ class TeamController extends Controller
                 $constraint->aspectRatio();
             })->encode();
             $resized->save(public_path($path));
-
-            return $newName;
         }
     }
 
@@ -61,7 +59,9 @@ class TeamController extends Controller
      */
     public function create()
     {
-        return view('team-create');
+        $teams = Team::all();
+
+        return view('team-create', compact('teams'));
     }
 
     /**
@@ -72,15 +72,20 @@ class TeamController extends Controller
      */
     public function store(StoreTeamRequest $request)
     {
-        $newName = $request->validated()['file']->hashName();
-        $this->HandleImage($request->validated(), $newName);
+        //check if the request containt a file
+        if ($request->hasFile('file')) {
+            $newName = $request->validated()['file']->hashName();
+            $this->HandleImage($request->validated(), $newName);
+        }
         $slug = mb_strtoupper($request->validated()['slug']);
+
         Team::create([
             'name' => $request->validated()['name'],
             'slug' => $slug
         ]);
         Team::where('slug', '=', $slug)->first()->images()->create(['file_name' => $newName]);
-        redirect('/team/create');
+
+        return redirect('/team/create');
     }
 
     /**
