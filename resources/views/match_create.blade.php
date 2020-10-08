@@ -8,8 +8,10 @@
         @endforeach
     </ul>
     @endif
-    <p>Equipe non listée ?</p>
-    <a href="{{ route('team_create') }}">Ajouter une équipe</a>
+    <p>
+        Unlisted team ?
+        <a href="{{ route('team_create') }}">I want to add a team.</a>
+    </p>
 </div>
 <form action="/match" method="POST">
     @csrf

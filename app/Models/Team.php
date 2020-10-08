@@ -183,8 +183,6 @@ class Team extends Model
         }
 
         //calculate points (loses dosen't give any points, wins give 3 points each, draws give 1 point each)
-
-        return 0;
-        //return ($wins * 3) + $draws;
+        return ($wins * 3) + $draws;
     }
 }
