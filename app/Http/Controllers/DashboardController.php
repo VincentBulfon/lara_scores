@@ -9,8 +9,8 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $matches = Match::all();
-        $teams = Team::with('matches')->get();
+        $matches = Match::with('teams')->get();
+        $teams = Team::with('matches.teams')->get();
 
         return view('dashboard', compact(['matches', 'teams']));
     }
