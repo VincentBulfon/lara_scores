@@ -19,10 +19,13 @@ class TeamController extends Controller
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      * @throws \Intervention\Image\Exception\NotWritableException
      */
-    private function HandleImage(array $request, $newName)
+    private function HandleImage(array $request)
     {
         if ($request['file']) {
             $file = $request['file'];
+
+            $newName = $file->hashName();
+
             //Storage::makeDirectory is important because if you don't create a new directory intervention image doesn't have the permission to create a new directory if the specified path doesn't already exist.
             Storage::makeDirectory('/images/small/');
             //the name of the final file should be provided in the file path refer to exemples at "http://image.intervention.io/api/save" for more infos
@@ -40,6 +43,8 @@ class TeamController extends Controller
             })->encode();
             $resized->save(public_path($path));
         }
+
+        return $newName;
     }
 
     /**
@@ -74,8 +79,7 @@ class TeamController extends Controller
     {
         //check if the request containt a file
         if ($request->hasFile('file')) {
-            $newName = $request->validated()['file']->hashName();
-            $this->HandleImage($request->validated(), $newName);
+            $newName = $this->HandleImage($request->validated());
         }
         $slug = mb_strtoupper($request->validated()['slug']);
 
@@ -107,7 +111,7 @@ class TeamController extends Controller
      */
     public function edit(Team $team)
     {
-        //
+        return view('team-edit', compact('team'));
     }
 
     /**
@@ -119,7 +123,7 @@ class TeamController extends Controller
      */
     public function update(Request $request, Team $team)
     {
-        //
+        dd($request);
     }
 
     /**
