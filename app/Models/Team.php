@@ -21,6 +21,15 @@ class Team extends Model
     }
 
     /**
+     * return the relation between a team and it stats
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function stats()
+    {
+        return $this->hasOne('App\Models\Stat');
+    }
+
+    /**
      * return the corresponding relationship between images and teams
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
