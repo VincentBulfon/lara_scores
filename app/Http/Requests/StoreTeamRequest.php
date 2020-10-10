@@ -24,8 +24,8 @@ class StoreTeamRequest extends FormRequest
     public function rules()
     {
         return [
-            'slug' => 'bail|required|string',
-            'name' => 'bail|required|string',
+            'slug' => 'bail|required|unique:teams|string',
+            'name' => 'bail|required|unique:teams|string',
             'file' => 'bail|required|mimes:jpeg,png,jpg,svg',
         ];
     }
