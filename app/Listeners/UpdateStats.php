@@ -25,43 +25,17 @@ class UpdateStats
      */
     public function handle(MatchCreated $event)
     {
-        $match = $event->match;
-
-        foreach ($match->teams as $key => $team) {
-            $thisTeamStat = Stat::where('team_id', '=', $team->id);
-
-            $thisTeamStat->games++;
-            if ($team->homeMatch($match)) {
-                $thisTeamStat->goals_for += $match->homeTeamGoals;
-                $thisTeamStat->goals_against += $match->awayTeamGoals;
-            } else {
-                $thisTeamStat->goals_for += $match->awayTeamGoals;
-                $thisTeamStat->goals_against += $match->homeTeamGoals;
-            }
-            $thisTeamStat->goals_difference = $thisTeamStat->goals_for - $thisTeamStat->goals_against;
-
-            if (!$key) {
-                if ($team->goalsInMatch($match) > $match->teams[1]->goalsInMatch($match)) {
-                    $thisTeamStat->wins += 1;
-                    $thisTeamStat->points += 3;
-                } elseif ($team->goalsInMatch($match) < $match->teams[1]->goalsInMatch($match)) {
-                    $thisTeamStat->loses += 1;
-                } else {
-                    $thisTeamStat->draws += 1;
-                    $thisTeamStat->points += 1;
-                }
-            } else {
-                if ($team->goalsInMatch($match) > $match->teams[0]->goalsInMatch($match)) {
-                    $thisTeamStat->wins += 1;
-                    $thisTeamStat->points += 3;
-                } elseif ($team->goalsInMatch($match) < $match->teams[0]->goalsInMatch($match)) {
-                    $thisTeamStat->loses += 1;
-                } else {
-                    $thisTeamStat->draws += 1;
-                    $thisTeamStat->points += 1;
-                }
-            }
-            $thisTeamStat->save();
+        foreach ($event->match->teams as $key => $team) {
+            $thisTeamStat = Stat::where('team_id', '=', $team->id)->first();
+            $thisTeamStat->games = $team->games;
+            $thisTeamStat->goals_for = $team->goalsFor;
+            $thisTeamStat->goals_against = $team->goalsAgainst;
+            $thisTeamStat->goals_difference = $team->goalsDifference;
+            $thisTeamStat->wins = $team->wins;
+            $thisTeamStat->losses = $team->losses;
+            $thisTeamStat->draws = $team->draws;
+            $thisTeamStat->points = $team->points;
         }
+        $thisTeamStat->save();
     }
 }

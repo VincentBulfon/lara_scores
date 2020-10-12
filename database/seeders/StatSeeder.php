@@ -18,7 +18,7 @@ class StatSeeder extends Seeder
         foreach (Team::with('matches.teams')->get() as $team) {
             $wins = $team->wins;
             $draws = $team->draws;
-            $defeats = $team->loses;
+            $defeats = $team->losses;
             $team_id = $team->id;
             $goals = $team->goalsFor;
             $games = $team->games;

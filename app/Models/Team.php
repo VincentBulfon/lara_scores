@@ -14,6 +14,7 @@ class Team extends Model
     /**
      * return the relation between matches and teams
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     *
      */
     public function matches()
     {
@@ -116,12 +117,12 @@ class Team extends Model
     }
 
     /**
-     * return the numbre of loses
+     * return the numbre of losses
      * @return int
      */
-    public function getLosesAttribute()
+    public function getLossesAttribute()
     {
-        $loses = 0;
+        $losses = 0;
         foreach ($this->matches as $match) {
             if ($match->teams[0]->id === $this->id) {
                 $thisTeamGoals = $match->teams[0]->pivot->goals;
@@ -130,10 +131,10 @@ class Team extends Model
                 $thisTeamGoals = $match->teams[1]->pivot->goals;
                 $oppenentTeamGoals = $match->teams[0]->pivot->goals;
             }
-            $thisTeamGoals < $oppenentTeamGoals ? $loses++ : null ;
+            $thisTeamGoals < $oppenentTeamGoals ? $losses++ : null ;
         }
 
-        return $loses;
+        return $losses;
     }
 
     /**

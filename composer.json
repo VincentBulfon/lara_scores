@@ -15,6 +15,7 @@
         "intervention/image": "^2.5",
         "laravel/fortify": "^1.6",
         "laravel/framework": "^8.0",
+        "laravel/telescope": "^4.1",
         "laravel/tinker": "^2.0",
         "wildbit/swiftmailer-postmark": "^3.3"
     },

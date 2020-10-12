@@ -22,6 +22,7 @@ class MatchCreated
     public function __construct(Match $match)
     {
         $this->match = $match;
+        
     }
 
     /**
