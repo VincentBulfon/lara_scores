@@ -55,7 +55,7 @@ class TeamPolicy
      */
     public function update(User $user, Team $team)
     {
-        //
+        return $user->id = 1 || 2;
     }
 
     /**

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MatchCreated;
 use App\Http\Requests\StoreMatchRequest;
+use App\Mail\MatchAdded;
 use App\Models\Match;
 use App\Models\Team;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class MatchController extends Controller
 {
@@ -50,6 +53,9 @@ class MatchController extends Controller
 
         $match->teams()->attach($homeTeam->id, ['is_home' => 1, 'goals' => $validatedData['home-team-goals']]);
         $match->teams()->attach($awayTeam->id, ['is_home' => 0, 'goals' => $validatedData['away-team-goals']]);
+
+        //event(new MatchCreated($match));
+        Mail::to('vincent.bulfon@student.hepl.be')->send(new MatchAdded($match));
 
         return redirect('/');
     }

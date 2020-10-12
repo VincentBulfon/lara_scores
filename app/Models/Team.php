@@ -39,6 +39,18 @@ class Team extends Model
     }
 
     /**
+     * return number of goals made in a specific
+     * @param \App\Models\Match $match
+     * @return int
+     */
+    public function goalsInMatch(Match $match)
+    {
+        return $this->matches->filter(function ($m) use ($match) {
+            return $m->is($match);
+        })->first()->pivot->goals;
+    }
+
+    /**
      * return the number of games played
      * @return int
      */

@@ -39,5 +39,10 @@ Route::post(
     [App\Http\Controllers\TeamController::class, 'store']
 )->name('team_store')->middleware(['auth', 'can:create, App\Models\Team']);
 
+Route::get(
+    '/team/{team:slug}/edit',
+    [App\Http\Controllers\TeamController::class, 'edit']
+)->name('team_edit')->middleware(['auth', 'can:update,team']);
+
 //Route::resource('/matches', MatchController::class)->middleware(['auth', 'can:store, App\Models\Match']);
 //Route::resource('/teams', MatchController::class)->middleware(['auth', 'can:store, App\Models\Team']);

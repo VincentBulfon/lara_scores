@@ -16,7 +16,9 @@ class CreateStatsTable extends Migration
         Schema::create('stats', function (Blueprint $table) {
             $table->id();
             $table->foreignId('team_id')->constrained()->onDelete('cascade');
-            $table->unsignedTinyInteger('goals')->default(0);
+            $table->string('team_name');
+            $table->string('team_slug');
+            $table->unsignedTinyInteger('points')->default(0);
             $table->unsignedTinyInteger('games')->default(0);
             $table->unsignedTinyInteger('wins')->default(0);
             $table->unsignedTinyInteger('losses')->default(0);

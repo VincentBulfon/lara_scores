@@ -6,7 +6,8 @@
         <a href="{{route('register')}}">Register</a>
 </div>
 @endguest()
-<x-standings :teams=$teams/>
+
+<x-standings :stats=$stats/>
 <x-game_played :data=$date :matches=$matches />
 <hr>
 @auth()

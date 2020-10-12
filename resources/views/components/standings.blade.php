@@ -15,17 +15,22 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($teams as $team)
+            @foreach($stats as $stat)
             <tr>
-                <td>{{$team->name}}</td>
-                <td>{{$team->totalGames }}</td>
-                <td>{{$team->points}}</td>
-                <td>{{$team->wins}}</td>
-                <td>{{$team->loses}}</td>
-                <td>{{$team->draws}}</td>
-                <td>{{$team->goalsFor}}</td>
-                <td>{{$team->goalsAgainst}}</td>
-                <td>{{$team->goalsDifference}}</td>
+                <td>
+                    <a
+                        href="{{route('team_edit', $stat->team_slug)}}"
+                        >{{$stat->team_name}}</a
+                    >
+                </td>
+                <td>{{$stat->games }}</td>
+                <td>{{$stat->points}}</td>
+                <td>{{$stat->wins}}</td>
+                <td>{{$stat->losses}}</td>
+                <td>{{$stat->draws}}</td>
+                <td>{{$stat->goals_for}}</td>
+                <td>{{$stat->goals_against}}</td>
+                <td>{{$stat->goals_difference}}</td>
             </tr>
             @endforeach
         </tbody>
