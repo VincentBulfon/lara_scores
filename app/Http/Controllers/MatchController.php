@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Events\MatchCreated;
 use App\Http\Requests\StoreMatchRequest;
-use App\Mail\MatchAdded;
 use App\Models\Match;
 use App\Models\Team;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 
 class MatchController extends Controller
 {
@@ -43,22 +43,22 @@ class MatchController extends Controller
     public function store(StoreMatchRequest $request)
     {
         $validatedData = $request->validated();
-        $homeTeam = Team::where('slug', strtoupper($validatedData['home-team']))->first();
-        $awayTeam = Team::where('slug', strtoupper($validatedData['away-team']))->first();
+        DB::transaction(function () use ($validatedData) {
+            $homeTeam = Team::where('slug', strtoupper($validatedData['home-team']))->first();
+            $awayTeam = Team::where('slug', strtoupper($validatedData['away-team']))->first();
 
-        $match = Match::create([
-            'played_at' => $validatedData['played-at'],
-            'slug' => strtoupper($homeTeam->slug . $awayTeam->slug)
-        ]);
+            $match = Match::create([
+                'played_at' => $validatedData['played-at'],
+                'slug' => strtoupper($homeTeam->slug . $awayTeam->slug)
+            ]);
 
-        $match->teams()->attach($homeTeam->id, ['is_home' => 1, 'goals' => $validatedData['home-team-goals']]);
-        $match->teams()->attach($awayTeam->id, ['is_home' => 0, 'goals' => $validatedData['away-team-goals']]);
+            $match->teams()->attach($homeTeam->id, ['is_home' => 1, 'goals' => $validatedData['home-team-goals']]);
+            $match->teams()->attach($awayTeam->id, ['is_home' => 0, 'goals' => $validatedData['away-team-goals']]);
 
-        event(new MatchCreated($match));
+            event(new MatchCreated($match), request()->user()->email);
+        });
 
-        Mail::to('vincent.bulfon@student.hepl.be')->send(new MatchAdded($match));
-
-        return redirect('/');
+        return redirect(RouteServiceProvider::HOME);
     }
 
     /**

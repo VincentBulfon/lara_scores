@@ -7,14 +7,17 @@ use App\Models\Stat;
 
 class UpdateStats
 {
+    public $match;
+    public $event;
+
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(MatchCreated $event)
     {
-        //
+        $this->match = $event->match;
     }
 
     /**
@@ -23,9 +26,10 @@ class UpdateStats
      * @param  MatchCreated  $event
      * @return void
      */
-    public function handle(MatchCreated $event)
+    public function handle()
     {
-        foreach ($event->match->teams as $key => $team) {
+        dd($this->match);
+        foreach ($this->match->teams as $key => $team) {
             $thisTeamStat = Stat::where('team_id', '=', $team->id)->first();
             $thisTeamStat->games = $team->games;
             $thisTeamStat->goals_for = $team->goalsFor;
